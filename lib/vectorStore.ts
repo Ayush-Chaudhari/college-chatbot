@@ -2,8 +2,13 @@
 import { ChromaClient } from "chromadb";
 import type { Metadata } from "chromadb";
 
+const chromaUrl = process.env.CHROMA_URL ?? "http://localhost:8000";
+const url = new URL(chromaUrl);
+
 const client = new ChromaClient({
-  path: "http://localhost:8000",
+  host: url.hostname,
+  port: Number(url.port) || 8000,
+  ssl: url.protocol === "https:",
 });
 
 let collectionCache: Awaited<ReturnType<typeof client.getOrCreateCollection>> | null = null;
