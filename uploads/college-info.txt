@@ -1,0 +1,55 @@
+COLLEGE INFORMATION GUIDE
+==========================
+
+FEES STRUCTURE
+--------------
+B.Tech Computer Science Engineering: Rs. 85,000 per year
+B.Tech Electronics Engineering: Rs. 80,000 per year
+Hostel Fee: Rs. 45,000 per year
+Mess Fee: Rs. 30,000 per year
+Exam Fee: Rs. 2,500 per semester
+Late Fee Penalty: Rs. 500 per month after due date
+
+ACADEMIC CALENDAR 2024-25
+--------------------------
+First Semester Start: July 15, 2024
+Mid Semester Exam: September 10-20, 2024
+First Semester End: November 30, 2024
+Winter Break: December 1-31, 2024
+Second Semester Start: January 2, 2025
+Final Exam: April 10-30, 2025
+
+HOSTEL RULES
+------------
+Curfew time for boys hostel: 10:00 PM
+Curfew time for girls hostel: 9:00 PM
+Visitors allowed only on Sundays between 10 AM to 5 PM
+No cooking allowed inside rooms
+Wifi available from 6 AM to 11 PM only
+
+DEPARTMENTS
+-----------
+Computer Science Engineering: Block A, Room 101
+Electronics Engineering: Block B, Room 201
+Mechanical Engineering: Block C, Room 301
+Civil Engineering: Block D, Room 401
+Principal Office: Admin Block, Room 001
+Exam Cell: Admin Block, Room 010
+
+CONTACT INFORMATION
+-------------------
+College Helpline: 044-12345678
+Admission Office: 044-12345679
+Hostel Warden Boys: 9876543210
+Hostel Warden Girls: 9876543211
+Email: info@college.edu.in
+
+SYLLABUS - CSE SEMESTER 3
+--------------------------
+Subject 1: Data Structures and Algorithms (4 credits)
+Subject 2: Digital Logic Design (3 credits)
+Subject 3: Discrete Mathematics (3 credits)
+Subject 4: Object Oriented Programming using Java (4 credits)
+Subject 5: Computer Organization (3 credits)
+Subject 6: Environmental Science (2 credits)
+Total Credits: 19
