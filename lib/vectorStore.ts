@@ -1,52 +1,39 @@
 // lib/vectorStore.ts
-import { ChromaClient } from "chromadb";
-import type { Metadata } from "chromadb";
+import { Pinecone } from "@pinecone-database/pinecone";
 
-const chromaUrl = process.env.CHROMA_URL ?? "http://localhost:8000";
-const url = new URL(chromaUrl);
-
-const client = new ChromaClient({
-  host: url.hostname,
-  port: Number(url.port) || 8000,
-  ssl: url.protocol === "https:",
+const pinecone = new Pinecone({
+  apiKey: process.env.PINECONE_API_KEY ?? "",
 });
 
-let collectionCache: Awaited<ReturnType<typeof client.getOrCreateCollection>> | null = null;
-const COLLECTION_NAME = "college_docs";
-
-export async function getCollection() {
-  if (collectionCache) return collectionCache;
-  collectionCache = await client.getOrCreateCollection({
-    name: COLLECTION_NAME,
-    metadata: { "hnsw:space": "cosine" },
-  });
-  return collectionCache;
-}
+const index = pinecone.index(process.env.PINECONE_INDEX ?? "college-chatbot");
 
 export async function addDocuments(
   texts: string[],
   embeddings: number[][],
-  metadatas: Metadata[]
+  metadatas: { source: string; chunk: number }[]
 ) {
-  const collection = await getCollection();
-  const ids = texts.map((_, i) => `doc_${Date.now()}_${i}`);
-  await collection.add({
-    ids,
-    embeddings,
-    documents: texts,
-    metadatas,
-  });
-  return ids;
+  const vectors = texts.map((text, i) => ({
+    id: `doc_${Date.now()}_${i}`,
+    values: embeddings[i],
+    metadata: { ...metadatas[i], text },
+  }));
+
+await index.upsert({ records: vectors });
+  return vectors.map((v) => v.id);
 }
 
 export async function searchSimilar(
   queryEmbedding: number[],
   nResults: number = 3
 ) {
-  const collection = await getCollection();
-  const results = await collection.query({
-    queryEmbeddings: [queryEmbedding],
-    nResults,
+  const results = await index.query({
+    vector: queryEmbedding,
+    topK: nResults,
+    includeMetadata: true,
   });
-  return results;
+
+  return {
+    documents: [results.matches?.map((m) => String(m.metadata?.text ?? "")) ?? []],
+    metadatas: [results.matches?.map((m) => ({ source: String(m.metadata?.source ?? "unknown") })) ?? []],
+  };
 }

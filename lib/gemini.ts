@@ -24,11 +24,20 @@ export async function generateAnswer(prompt: string): Promise<string> {
   return data.choices?.[0]?.message?.content ?? "";
 }
 
-// For generating embeddings
+// For generating embeddings using Hugging Face
 export async function generateEmbedding(text: string): Promise<number[]> {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(text);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => (b - 128) / 128);
+  const response = await fetch(
+    "https://api-inference.huggingface.co/pipeline/feature-extraction/sentence-transformers/all-MiniLM-L6-v2",
+    {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ inputs: text }),
+    }
+  );
+  const data = await response.json();
+  // Returns 384 dimensions — matches Pinecone index!
+  return Array.isArray(data[0]) ? data[0] : data;
 }
